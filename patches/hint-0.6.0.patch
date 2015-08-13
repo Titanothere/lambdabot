@@ -1,0 +1,62 @@
+commit 348581bc2fad9575536ad3110b08ddbe0b973205
+Author: Bertram Felgenhauer <int-e@gmx.de>
+Date:   Mon Aug 22 03:23:24 2016 +0200
+
+    Support dynamic ghc
+
+diff --git a/src/Hint/Compat.hs b/src/Hint/Compat.hs
+index 9b1a9b0..e5050f8 100644
+--- a/src/Hint/Compat.hs
++++ b/src/Hint/Compat.hs
+@@ -16,7 +16,11 @@ supportedExtensions = map f GHC.xFlags
+ #endif
+ 
+ configureDynFlags :: GHC.DynFlags -> GHC.DynFlags
+-configureDynFlags dflags = dflags{GHC.ghcMode    = GHC.CompManager,
++configureDynFlags dflags =
++#if __GLASGOW_HASKELL__ >= 708
++    (if GHC.dynamicGhc then GHC.addWay' GHC.WayDyn else id)
++#endif
++                           dflags{GHC.ghcMode    = GHC.CompManager,
+                                   GHC.hscTarget  = GHC.HscInterpreted,
+                                   GHC.ghcLink    = GHC.LinkInMemory,
+                                   GHC.verbosity  = 0}
+diff --git a/src/Hint/GHC.hs b/src/Hint/GHC.hs
+index 562dc19..3f1e389 100644
+--- a/src/Hint/GHC.hs
++++ b/src/Hint/GHC.hs
+@@ -25,6 +25,10 @@ import DynFlags as X (xFlags, xopt, LogAction, FlagSpec(..))
+ import DynFlags as X (xFlags, xopt, LogAction)
+ #endif
+ 
++#if __GLASGOW_HASKELL__ >= 800
++import DynFlags as X (WarnReason(NoReason))
++#endif
++
+ import PprTyThing as X (pprTypeForUser)
+ import SrcLoc as X (mkRealSrcLoc)
+ 
+@@ -32,4 +36,8 @@ import SrcLoc as X (mkRealSrcLoc)
+ import ConLike as X (ConLike(RealDataCon))
+ #endif
+ 
++#if __GLASGOW_HASKELL__ >= 708
++import DynFlags as X (addWay', Way(..), dynamicGhc)
++#endif
++
+ type Message = MsgDoc
+diff --git a/src/Hint/Parsers.hs b/src/Hint/Parsers.hs
+index 92a2f16..9b2ba87 100644
+--- a/src/Hint/Parsers.hs
++++ b/src/Hint/Parsers.hs
+@@ -8,10 +8,6 @@ import Control.Monad.Trans (liftIO)
+ 
+ import qualified Hint.GHC as GHC
+ 
+-#if __GLASGOW_HASKELL__ >= 800
+-import qualified DynFlags as GHC
+-#endif
+-
+ data ParseResult = ParseOk | ParseError GHC.SrcSpan GHC.Message
+ 
+ parseExpr :: MonadInterpreter m => String -> m ParseResult

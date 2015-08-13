@@ -1,0 +1,20 @@
+commit 4d973577dc93fdb85befdfb0f99b224f50f6a69d
+Author: Bertram Felgenhauer <int-e@gmx.de>
+Date:   Sat Mar 18 19:58:20 2017 +0100
+
+    mark Data.Profunctor.Types trustworthy
+
+diff --git a/src/Data/Profunctor/Types.hs b/src/Data/Profunctor/Types.hs
+index 16af281..2ad435d 100644
+--- a/src/Data/Profunctor/Types.hs
++++ b/src/Data/Profunctor/Types.hs
+@@ -3,9 +3,7 @@
+ {-# LANGUAGE RankNTypes #-}
+ {-# LANGUAGE ScopedTypeVariables #-}
+ 
+-#if __GLASGOW_HASKELL__ >= 704 && __GLASGOW_HASKELL__ < 708
+ {-# LANGUAGE Trustworthy #-}
+-#endif
+ 
+ -----------------------------------------------------------------------------
+ -- |

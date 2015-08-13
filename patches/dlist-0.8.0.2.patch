@@ -1,0 +1,18 @@
+commit 6a8158e6fe8c9311afcb786d2345a04ac4e7edd0
+Author: Bertram Felgenhauer <int-e@gmx.de>
+Date:   Sat Mar 18 19:59:37 2017 +0100
+
+    mark Data.DList trustworthy
+
+diff --git a/Data/DList.hs b/Data/DList.hs
+index 69b8866..558717e 100644
+--- a/Data/DList.hs
++++ b/Data/DList.hs
+@@ -5,6 +5,7 @@
+ 
+ #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 708
+ {-# LANGUAGE PatternSynonyms, ViewPatterns #-}
++{-# LANGUAGE Trustworthy #-}
+ #endif
+ 
+ -----------------------------------------------------------------------------

@@ -1,0 +1,18 @@
+commit 150afe2c98484a0414aa0efebc526e47027ba316
+Author: Bertram Felgenhauer <int-e@gmx.de>
+Date:   Sat Mar 18 18:25:35 2017 +0100
+
+    bump dependent-sum upper bound
+
+diff --git a/dependent-sum-template.cabal b/dependent-sum-template.cabal
+index c13b61f..36818aa 100644
+--- a/dependent-sum-template.cabal
++++ b/dependent-sum-template.cabal
+@@ -23,6 +23,6 @@ Library
+   exposed-modules:      Data.GADT.Compare.TH
+                         Data.GADT.Show.TH
+   build-depends:        base >= 3 && <5,
+-                        dependent-sum >= 0.2 && < 0.4,
++                        dependent-sum >= 0.2 && < 0.5,
+                         template-haskell,
+                         th-extras >= 0.0.0.2
